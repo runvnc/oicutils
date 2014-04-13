@@ -1,0 +1,9 @@
+[Package]
+name          = "oicutils"
+version       = "0.1.0"
+author        = "Jason Livesay"
+description   = "Utility procs"
+license       = "MIT"
+
+[Deps]
+Requires: "nimrod >= 0.9.3"
