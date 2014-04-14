@@ -8,7 +8,12 @@ proc uid*():string =
    
 var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" 
   
-proc parseDockerHostPort*(varname, defaultHost, defaultPort:string):PStringTable =
+proc parseDockerHostPort*(envname, defaultHost, defaultPort:string):PStringTable =
+  var varname = ""
+  if existsEnv(envname):
+    varname = getEnv(envname)
+  echo "varname is"
+  echo varname
   result = newStringTable()
   var slashPos = varname.find("//")
   if slashPos != -1:
