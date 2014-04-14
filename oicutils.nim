@@ -17,12 +17,17 @@ proc parseDockerHostPort*(envname, defaultHost, defaultPort:string):PStringTable
   result = newStringTable()
   var slashPos = varname.find("//")
   if slashPos != -1:
-    var colonPos = varname.find(":")
+    var colonPos = varname.find(':', 4)
+    
     if colonPos == -1:
+      echo "could not find colon"
       return result
     else:
-      result["host"] = varname[slashPos+2..colonPos-1]
-      result["port"] = varname[colonPos+1..varname.len-1]
+      result["host"] = varname[slashPos+2 .. colonPos-1]
+      echo "slashPos is " & $slashPos
+      echo "colonPos is " & $colonPos
+      echo "result[host] is " & result["host"]
+      result["port"] = varname[colonPos+1 .. varname.len-1]
   else:
     result["host"] = defaultHost
     result["port"] = defaultPort
@@ -96,6 +101,11 @@ proc progress*(percent:float) =
 
 
 when isMainModule:  
+  putEnv("REDIS_PORT", "tcp://172.17.0.136:6379")
+  var parsed = parseDockerHostPort("REDIS_PORT", "localhost", "6379")
+  echo "parseDockerHostPort returns:"
+  for k, v in parsed:
+    echo k & ": " & v
   echo(fromQueryString("dog=20&cat=lady"))
   echo(fromStringTableSerial("{password: pass,  newuser: ilaksh4@fastmail.fm}"))
   echo(makeApiKey())
