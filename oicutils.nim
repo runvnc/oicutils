@@ -8,7 +8,7 @@ proc uid*():string =
    
 var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" 
   
-proc parseDockerHostPort*(varname:string):PStringTable =
+proc parseDockerHostPort*(varname, defaultHost, defaultPort:string):PStringTable =
   result = newStringTable()
   var slashPos = varname.find("//")
   if slashPos != -1:
@@ -19,7 +19,8 @@ proc parseDockerHostPort*(varname:string):PStringTable =
       result["host"] = varname[slashPos+2..colonPos-1]
       result["port"] = varname[colonPos+1..varname.len-1]
   else:
-    return result
+    result["host"] = defaultHost
+    result["port"] = defaultPort
     
 proc makeApiKey*():string =
   randomize()  
